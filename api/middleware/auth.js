@@ -15,7 +15,7 @@ const auth = async (req, res, next) => {
 const isSeller = async (req, res, next) => {
     try {
         const isAuthorized = await ValidateSignature(req);
-        if (isAuthorized && req.user && req.user.role === 'Seller') {
+        if (isAuthorized && req.user && req.user.role === 'SELLER') {
             return next();
         }
         return res.status(403).json({ message: 'Only sellers can perform this action' });
