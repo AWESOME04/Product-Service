@@ -97,6 +97,36 @@ class ProductRepository {
       throw err;
     }
   }
+
+  async SearchProducts(query) {
+    try {
+      return await Product.findAll({
+        where: {
+          [Op.and]: [
+            {
+              [Op.or]: [
+                {
+                  name: {
+                    [Op.iLike]: `%${query}%`
+                  }
+                },
+                {
+                  desc: {
+                    [Op.iLike]: `%${query}%`
+                  }
+                }
+              ]
+            },
+            { available: true }
+          ]
+        },
+        limit: 20 // Limit results for performance
+      });
+    } catch (err) {
+      console.error('Error searching products:', err);
+      throw err;
+    }
+  }
 }
 
 module.exports = ProductRepository;
