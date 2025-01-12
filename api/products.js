@@ -87,24 +87,6 @@ module.exports = (app, channel) => {
     }
   });
 
-  app.get("/product/search", async (req, res, next) => {
-    try {
-      const query = req.query.name || '';
-      console.log('Search query:', query);
-      
-      if (!query.trim()) {
-        return res.json({ products: [] });
-      }
-
-      const { data } = await service.SearchProducts(query);
-      console.log('Search results:', data);
-      return res.json(data);
-    } catch (err) {
-      console.error('Search error:', err);
-      next(err);
-    }
-  });
-
   app.put("/wishlist", auth, async (req, res, next) => {
     try {
       const { _id } = req.user;

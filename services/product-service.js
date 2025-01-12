@@ -133,28 +133,6 @@ class ProductService {
       throw err;
     }
   }
-
-  async SearchProducts(query) {
-    try {
-      const products = await this.repository.SearchProducts(query);
-      return FormatData({
-        products: products.map(product => ({
-          _id: product.id,
-          name: product.name,
-          desc: product.desc,
-          img: product.img,
-          type: product.type,
-          stock: product.stock,
-          price: product.price,
-          available: product.available,
-          seller: product.seller
-        }))
-      });
-    } catch (err) {
-      console.error('Error in SearchProducts service:', err);
-      throw err;
-    }
-  }
 }
 
 module.exports = ProductService;
