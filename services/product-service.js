@@ -19,16 +19,18 @@ class ProductService {
   async GetProducts() {
     try {
       const products = await this.repository.Products();
-
-      let categories = {};
-
-      products.map(({ type }) => {
-        categories[type] = type;
-      });
-
       return FormatData({
-        products,
-        categories: Object.keys(categories),
+        products: products.map(product => ({
+          id: product.id,
+          name: product.name,
+          desc: product.desc,
+          img: product.img,
+          type: product.type,
+          stock: product.stock,
+          price: product.price,
+          available: product.available,
+          seller: product.seller
+        }))
       });
     } catch (err) {
       console.error('Error in GetProducts service:', err);

@@ -4,16 +4,18 @@ const { Op } = require("sequelize");
 class ProductRepository {
   async CreateProduct({ name, desc, img, type, stock, price, available, seller }) {
     try {
+      console.log('Creating product with data:', { name, desc, img, type, stock, price, available, seller });
       const product = await Product.create({
         name,
         desc,
-        img,
+        img: img || 'https://placehold.co/600x400', // Fallback image if none provided
         type,
         stock,
         price,
         available,
         seller
       });
+      console.log('Created product:', product.toJSON());
       return product;
     } catch (err) {
       console.error('Error creating product:', err);

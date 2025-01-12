@@ -16,8 +16,11 @@ const Product = sequelize.define('product', {
     allowNull: false
   },
   img: {
-    type: DataTypes.STRING(255),
-    allowNull: true
+    type: DataTypes.STRING(1024),
+    allowNull: true,
+    validate: {
+      isUrl: true
+    }
   },
   type: {
     type: DataTypes.ENUM(

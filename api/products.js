@@ -10,8 +10,10 @@ module.exports = (app, channel) => {
   app.get("/", async (req, res, next) => {
     try {
       const { data } = await service.GetProducts();
-      return res.status(200).json(data);
+      console.log("Products from DB:", data);
+      return res.json(data);
     } catch (error) {
+      console.error("Products API Error:", error);
       return res.status(404).json({ error });
     }
   });
@@ -22,7 +24,7 @@ module.exports = (app, channel) => {
       const { data } = await service.CreateProduct({
         name,
         desc,
-        img,
+        img: img || 'https://placehold.co/600x400',
         type,
         stock,
         price,
