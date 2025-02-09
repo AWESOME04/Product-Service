@@ -163,6 +163,19 @@ class ProductService {
       throw err;
     }
   }
+
+  async GetProductById(productId) {
+    try {
+      const product = await this.repository.FindById(productId);
+      if (!product) {
+        throw new Error('Product not found');
+      }
+      return FormatData(product);
+    } catch (err) {
+      console.error('Error in GetProductById service:', err);
+      throw err;
+    }
+  }
 }
 
 module.exports = ProductService;

@@ -176,4 +176,15 @@ module.exports = (app, channel) => {
       next(err);
     }
   });
+
+  app.get("/products/:id", async (req, res, next) => {
+    try {
+      const productId = req.params.id;
+      const { data } = await service.GetProductById(productId);
+      return res.json(data);
+    } catch (error) {
+      console.error("Get Product API Error:", error);
+      return res.status(404).json({ error });
+    }
+  });
 };
