@@ -176,4 +176,21 @@ module.exports = (app, channel) => {
       next(err);
     }
   });
+
+  app.delete("/product/:id", auth, isSeller, async (req, res, next) => {
+    try {
+      const productId = req.params.id;
+      const product = await service.GetProductDescription(productId);
+      
+      // Check if product exists and seller owns it
+      if (!product.data || product.data.seller !== req.user._id) {
+        return res.status(403).json({ message: "Not authorized to delete this product" });
+      }
+
+      await service.DeleteProduct(productId);
+      return res.status(200).json({ message: "Product deleted successfully" });
+    } catch (err) {
+      next(err);
+    }
+  });
 };

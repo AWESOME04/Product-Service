@@ -133,6 +133,16 @@ class ProductService {
       throw err;
     }
   }
+
+  async DeleteProduct(productId) {
+    try {
+      await this.repository.DeleteProduct(productId);
+      return FormatData({ message: "Product deleted successfully" });
+    } catch (err) {
+      console.error('Error in DeleteProduct service:', err);
+      throw err;
+    }
+  }
 }
 
 module.exports = ProductService;

@@ -97,6 +97,20 @@ class ProductRepository {
       throw err;
     }
   }
+
+  async DeleteProduct(id) {
+    try {
+      const product = await this.FindById(id);
+      if (!product) {
+        throw new Error('Product not found');
+      }
+      await product.destroy();
+      return true;
+    } catch (err) {
+      console.error('Error deleting product:', err);
+      throw err;
+    }
+  }
 }
 
 module.exports = ProductRepository;
