@@ -116,63 +116,20 @@ class ProductService {
     }
   }
 
-  async updateStock(productId, quantityChange) {
-    try {
-      const product = await this.repository.FindById(productId);
-      if (!product) {
-        throw new Error('Product not found');
-      }
-
-      console.log(`Updating stock for product ${productId}: ${product.stock} + ${quantityChange}`);
-      
-      const newStock = product.stock + quantityChange;
-      if (newStock < 0) {
-        throw new Error('Not enough stock available');
-      }
-
-      product.stock = newStock;
-      product.available = newStock > 0;
-      
-      const updatedProduct = await product.save();
-      console.log(`Updated stock: ${updatedProduct.stock}`);
-      
-      return FormatData(updatedProduct);
-    } catch (err) {
-      console.error('Error updating stock:', err);
-      throw err;
-    }
-  }
-
   async SubscribeEvents(payload) {
     try {
-      const { event, data } = JSON.parse(payload);
-      console.log('Received event:', event, 'with data:', data);
+      payload = JSON.parse(payload);
+      console.log("PAYLOAD IN SUBSCRIBING TO PRODUCT SERVICE");
+      console.log(payload);
+      const { event, data } = payload;
 
       switch (event) {
-        case 'UPDATE_PRODUCT_STOCK':
-          await this.updateStock(data.productId, data.quantityChange);
-          break;
         case "REDUCE_PRODUCT_STOCK":
-          await this.reduceStock(data);
+          this.reduceStock(data);
           break;
-        default:
-          console.log('Unknown event:', event);
       }
     } catch (err) {
-      console.error('Error in SubscribeEvents:', err);
-      throw err;
-    }
-  }
-
-  async GetProductById(productId) {
-    try {
-      const product = await this.repository.FindById(productId);
-      if (!product) {
-        throw new Error('Product not found');
-      }
-      return FormatData(product);
-    } catch (err) {
-      console.error('Error in GetProductById service:', err);
+      console.error('Error in SubscribeEvents service:', err);
       throw err;
     }
   }
